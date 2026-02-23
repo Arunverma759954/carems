@@ -15,7 +15,7 @@ const SLIDES = [
   },
 ];
 
-const AUTOPLAY_MS = 5500;
+const AUTOPLAY_MS = 5000;
 
 export default function BannerSlider() {
   const [current, setCurrent] = useState(0);
@@ -67,11 +67,11 @@ export default function BannerSlider() {
           </div>
         ))}
 
-        {/* Prev / Next buttons - auto-play + manual control */}
+        {/* Prev / Next – auto slider + best-looking arrows */}
         <button
           type="button"
           onClick={prev}
-          className="absolute left-3 top-1/2 z-10 -translate-y-1/2 flex h-11 w-11 items-center justify-center rounded-full bg-white/20 text-white shadow-lg backdrop-blur-md transition-all hover:bg-white/35 hover:scale-105 active:scale-95 md:left-5 md:h-12 md:w-12"
+          className="absolute left-4 top-1/2 z-10 flex h-12 w-12 -translate-y-1/2 items-center justify-center rounded-full border-2 border-white/30 bg-red-600 text-white shadow-[0_4px_20px_rgba(220,38,38,0.4)] transition-all duration-300 hover:scale-110 hover:border-white hover:bg-red-500 hover:shadow-[0_6px_28px_rgba(220,38,38,0.5)] active:scale-95 md:left-6 md:h-14 md:w-14"
           aria-label="Previous slide"
         >
           <svg className="h-6 w-6 md:h-7 md:w-7" fill="none" stroke="currentColor" strokeWidth={2.5} viewBox="0 0 24 24">
@@ -81,7 +81,7 @@ export default function BannerSlider() {
         <button
           type="button"
           onClick={next}
-          className="absolute right-3 top-1/2 z-10 -translate-y-1/2 flex h-11 w-11 items-center justify-center rounded-full bg-white/20 text-white shadow-lg backdrop-blur-md transition-all hover:bg-white/35 hover:scale-105 active:scale-95 md:right-5 md:h-12 md:w-12"
+          className="absolute right-4 top-1/2 z-10 flex h-12 w-12 -translate-y-1/2 items-center justify-center rounded-full border-2 border-white/30 bg-red-600 text-white shadow-[0_4px_20px_rgba(220,38,38,0.4)] transition-all duration-300 hover:scale-110 hover:border-white hover:bg-red-500 hover:shadow-[0_6px_28px_rgba(220,38,38,0.5)] active:scale-95 md:right-6 md:h-14 md:w-14"
           aria-label="Next slide"
         >
           <svg className="h-6 w-6 md:h-7 md:w-7" fill="none" stroke="currentColor" strokeWidth={2.5} viewBox="0 0 24 24">
