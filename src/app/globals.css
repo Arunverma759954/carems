@@ -24,3 +24,168 @@ body {
   color: var(--foreground);
   font-family: Arial, Helvetica, sans-serif;
 }
+
+@keyframes fadeIn {
+  from {
+    opacity: 0;
+    transform: translateY(0.5rem);
+  }
+  to {
+    opacity: 1;
+    transform: translateY(0);
+  }
+}
+
+@keyframes splash-logo-pop {
+  0% {
+    opacity: 0;
+    transform: scale(0.7);
+  }
+  60% {
+    opacity: 1;
+    transform: scale(1.08);
+  }
+  100% {
+    opacity: 1;
+    transform: scale(1);
+  }
+}
+
+@keyframes splash-text-rise {
+  0% {
+    opacity: 0;
+    transform: translateY(12px);
+  }
+  100% {
+    opacity: 1;
+    transform: translateY(0);
+  }
+}
+
+/* 3D hands: open (split) */
+@keyframes hands-open {
+  0% {
+    transform: translateX(0) rotateY(0deg);
+    opacity: 1;
+  }
+  100% {
+    transform: translateX(var(--hand-offset, -70px)) rotateY(var(--hand-rotate, -32deg));
+    opacity: 1;
+  }
+}
+
+/* 3D hands: close (rejoin) */
+@keyframes hands-close {
+  0% {
+    transform: translateX(var(--hand-offset, -70px)) rotateY(var(--hand-rotate, -32deg));
+  }
+  100% {
+    transform: translateX(0) rotateY(0deg);
+  }
+}
+
+/* logo fly to header */
+@keyframes logo-fly-in {
+  to {
+    opacity: 1;
+  }
+}
+
+/* Left hand: left side se aaye (tut kar aaye) */
+@keyframes hand-enter-left {
+  0% {
+    transform: translateX(-220px) rotateY(-35deg);
+    opacity: 0.7;
+  }
+  100% {
+    transform: translateX(-50px) rotateY(-12deg);
+    opacity: 1;
+  }
+}
+
+/* Right hand: right side se aaye (tut kar aaye) */
+@keyframes hand-enter-right {
+  0% {
+    transform: translateX(220px) rotateY(35deg);
+    opacity: 0.7;
+  }
+  100% {
+    transform: translateX(50px) rotateY(12deg);
+    opacity: 1;
+  }
+}
+
+/* Page load: content reveal (smooth entrance) */
+@keyframes content-reveal {
+  from {
+    opacity: 0;
+    transform: translateY(20px);
+  }
+  to {
+    opacity: 1;
+    transform: translateY(0);
+  }
+}
+
+.content-reveal {
+  opacity: 0;
+  transform: translateY(20px);
+}
+
+.content-reveal.revealed {
+  animation: content-reveal 0.75s cubic-bezier(0.22, 1, 0.36, 1) forwards;
+}
+
+/* Scroll-based section reveal – smooth, professional easing */
+@keyframes section-reveal-up {
+  from {
+    opacity: 0;
+    transform: translateY(32px);
+  }
+  to {
+    opacity: 1;
+    transform: translateY(0);
+  }
+}
+
+@keyframes section-reveal-left {
+  from {
+    opacity: 0;
+    transform: translateX(-40px);
+  }
+  to {
+    opacity: 1;
+    transform: translateX(0);
+  }
+}
+
+@keyframes section-reveal-right {
+  from {
+    opacity: 0;
+    transform: translateX(40px);
+  }
+  to {
+    opacity: 1;
+    transform: translateX(0);
+  }
+}
+
+.section-reveal-base {
+  opacity: 0;
+  will-change: opacity, transform;
+  transform: translateZ(0);
+  backface-visibility: hidden;
+}
+
+/* Smooth cubic-bezier: gentle start, soft landing at end */
+.section-reveal-up.visible {
+  animation: section-reveal-up 1s cubic-bezier(0.22, 1, 0.36, 1) forwards;
+}
+
+.section-reveal-left.visible {
+  animation: section-reveal-left 1s cubic-bezier(0.22, 1, 0.36, 1) forwards;
+}
+
+.section-reveal-right.visible {
+  animation: section-reveal-right 1s cubic-bezier(0.22, 1, 0.36, 1) forwards;
+}
