@@ -15,7 +15,7 @@ const SLIDES = [
   },
 ];
 
-const AUTOPLAY_MS = 5000;
+const AUTOPLAY_MS = 3000; // Auto slider: change slide every 3 seconds
 
 export default function BannerSlider() {
   const [current, setCurrent] = useState(0);
@@ -26,18 +26,21 @@ export default function BannerSlider() {
   }, []);
 
   const next = useCallback(() => {
-    goTo(current + 1);
-  }, [current, goTo]);
+    setCurrent((prev) => (prev + 1) % SLIDES.length);
+  }, []);
 
   const prev = useCallback(() => {
-    goTo(current - 1);
-  }, [current, goTo]);
+    setCurrent((prev) => (prev - 1 + SLIDES.length) % SLIDES.length);
+  }, []);
 
+  // Auto slide: har 3 second pe apne aap next slide (hover pe pause)
   useEffect(() => {
     if (isPaused) return;
-    const id = setInterval(next, AUTOPLAY_MS);
+    const id = setInterval(() => {
+      setCurrent((prev) => (prev + 1) % SLIDES.length);
+    }, AUTOPLAY_MS);
     return () => clearInterval(id);
-  }, [current, isPaused, next]);
+  }, [isPaused]);
 
   return (
     <section
