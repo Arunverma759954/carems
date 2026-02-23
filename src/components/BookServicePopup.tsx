@@ -14,19 +14,29 @@ const SERVICES = [
   { id: "payment", label: "Payment", icon: "card" },
 ];
 
-const POPUP_DELAY_MS = 3000;
+const POPUP_DELAY_MS = 3000;   // 3s after splash done
+const POPUP_AUTO_CLOSE_MS = 5000; // 5s after open, then close
 
-export default function BookServicePopup() {
+export default function BookServicePopup({ splashDone }: { splashDone: boolean }) {
   const [show, setShow] = useState(false);
   const [selectedService, setSelectedService] = useState<string | null>(null);
   const [name, setName] = useState("");
   const [phone, setPhone] = useState("");
   const [address, setAddress] = useState("");
 
+  // Popup sirf splash khatam hone ke 3 second baad dikhe
   useEffect(() => {
+    if (!splashDone) return;
     const t = setTimeout(() => setShow(true), POPUP_DELAY_MS);
     return () => clearTimeout(t);
-  }, []);
+  }, [splashDone]);
+
+  // 5 second baad apne aap band ho jaye
+  useEffect(() => {
+    if (!show) return;
+    const t = setTimeout(() => setShow(false), POPUP_AUTO_CLOSE_MS);
+    return () => clearTimeout(t);
+  }, [show]);
 
   const close = () => setShow(false);
 

@@ -49,7 +49,7 @@ export default function ClientBody({
         {children}
       </main>
       <Footer />
-      <BookServicePopup />
+      <BookServicePopup splashDone={splashDone} />
     </>
   );
 }
