@@ -161,20 +161,20 @@ export default function Header({ logoSlotRef, showLogo }: HeaderProps) {
         </button>
       </div>
 
-      {/* Mobile menu – full-screen overlay + slide-in drawer */}
+      {/* Mobile menu – full-screen overlay + slide-in drawer (responsive only) */}
       <div
-        className="fixed inset-0 z-40 xl:hidden"
+        className={`fixed inset-0 z-40 xl:hidden ${!mobileMenuOpen ? "pointer-events-none" : ""}`}
         aria-hidden={!mobileMenuOpen}
       >
-        {/* Backdrop */}
+        {/* Backdrop – fade in/out */}
         <div
           onClick={closeMenu}
-          className={`absolute inset-0 bg-black/60 backdrop-blur-sm transition-opacity duration-300 ${
-            mobileMenuOpen ? "opacity-100" : "pointer-events-none opacity-0"
+          className={`absolute inset-0 bg-black/60 backdrop-blur-sm transition-opacity duration-300 ease-out ${
+            mobileMenuOpen ? "opacity-100" : "opacity-0"
           }`}
         />
 
-        {/* Drawer panel – slides from right */}
+        {/* Drawer panel – slides in from right, smooth ease */}
         <div
           className={`absolute right-0 top-0 flex h-full w-full max-w-sm flex-col shadow-2xl transition-transform duration-300 ease-[cubic-bezier(0.22,1,0.36,1)] ${
             mobileMenuOpen ? "translate-x-0" : "translate-x-full"
