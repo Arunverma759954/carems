@@ -4,6 +4,7 @@ import { useRef, useState, useEffect } from "react";
 import Header from "@/components/Header";
 import SplashScreen from "@/components/SplashScreen";
 import Footer from "@/components/Footer";
+import BookServicePopup from "@/components/BookServicePopup";
 
 export default function ClientBody({
   children,
@@ -48,6 +49,7 @@ export default function ClientBody({
         {children}
       </main>
       <Footer />
+      <BookServicePopup />
     </>
   );
 }
