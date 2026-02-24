@@ -98,7 +98,7 @@ export default function BannerSlider() {
       onMouseLeave={() => setIsPaused(false)}
     >
       {/* CONSTANT BOX SIZE FOR ALL SCREENS */}
-      <div className="relative h-[500px] xs:h-[600px] sm:h-[750px] md:h-[850px] w-full overflow-hidden">
+      <div className="relative h-[480px] xs:h-[580px] sm:h-[750px] md:h-[850px] w-full overflow-hidden">
         {SLIDES.map((slide, index) => {
           const active = index === current;
           return (
@@ -164,7 +164,7 @@ export default function BannerSlider() {
 
                   {/* MAIN HEADING - Compact & Professional */}
                   <div className="relative mb-4 text-center max-w-4xl">
-                    <h1 className="text-3xl xs:text-4xl sm:text-5xl md:text-7xl font-black uppercase tracking-tighter leading-[0.9] text-white">
+                    <h1 className="text-2xl xs:text-3xl sm:text-5xl md:text-7xl font-black uppercase tracking-tighter leading-[0.9] text-white">
                       <div className="relative overflow-hidden pt-1">
                         <span
                           className="block"
@@ -213,7 +213,7 @@ export default function BannerSlider() {
                   </div>
 
                   {/* DESCRIPTION - Compact & Clear */}
-                  <div className="relative mb-8 max-w-xl px-4">
+                  <div className="relative mb-6 max-w-xl px-4">
                     <p
                       className="text-[10px] sm:text-base font-medium text-slate-100 leading-relaxed opacity-95 text-center"
                       style={{
