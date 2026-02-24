@@ -27,29 +27,24 @@ const FLOATING_LINKS = [
 
 export default function ServicesSection() {
   return (
-    <section className="relative overflow-hidden bg-zinc-50 px-4 py-20 sm:px-6 lg:px-8">
-      {/* Premium background */}
-      <div
-        className="absolute inset-0 opacity-40"
-        style={{
-          backgroundImage: `radial-gradient(circle at 20% 30%, rgba(30, 64, 175, 0.08) 0%, transparent 50%),
-            radial-gradient(circle at 80% 70%, rgba(220, 38, 38, 0.06) 0%, transparent 50%)`,
-        }}
-        aria-hidden
-      />
-      <div className="absolute inset-0 bg-[linear-gradient(to_bottom,transparent_0%,rgba(255,255,255,0.5)_100%)]" aria-hidden />
+    <section className="relative overflow-hidden bg-white px-4 py-24 sm:px-6 lg:px-8">
+      {/* Premium modern background */}
+      <div className="absolute inset-x-0 -top-40 -z-10 transform-gpu overflow-hidden blur-3xl sm:-top-80" aria-hidden="true">
+        <div className="relative left-[calc(50%-11rem)] aspect-[1155/678] w-[36.125rem] -translate-x-1/2 rotate-[30deg] bg-linear-to-tr from-[#ff80b5] to-[#9089fc] opacity-10 sm:left-[calc(50%-30rem)] sm:w-[72.1875rem]" style={{ clipPath: 'polygon(74.1% 44.1%, 100% 61.6%, 97.5% 26.9%, 85.5% 0.1%, 80.7% 2%, 72.5% 32.5%, 60.2% 62.4%, 52.4% 68.1%, 47.5% 58.3%, 45.2% 34.5%, 27.5% 76.7%, 0.1% 64.9%, 17.9% 100%, 27.6% 76.8%, 76.1% 97.7%, 74.1% 44.1%)' }}></div>
+      </div>
+      <div className="absolute inset-0 bg-[radial-gradient(#e5e7eb_1px,transparent_1px)] [background-size:16px_16px] [mask-image:radial-gradient(ellipse_50%_50%_at_50%_50%,#000_70%,transparent_100%)] opacity-20" aria-hidden />
 
       {/* Blue accent line + heading */}
       <div className="relative mx-auto max-w-[90rem]">
-        <div className="h-1 w-24 rounded-full bg-blue-600 sm:w-32" />
-        <h2 className="mt-6 text-3xl font-extrabold uppercase tracking-tight text-zinc-800 sm:text-4xl lg:text-5xl">
+        <div className="h-1.5 w-24 rounded-full bg-linear-to-r from-blue-600 to-blue-400 sm:w-32" />
+        <h2 className="mt-8 text-3xl font-black uppercase tracking-tight text-zinc-800 sm:text-4xl lg:text-6xl">
           You&apos;re at the{" "}
-          <span className="bg-linear-to-r from-blue-600 to-blue-700 bg-clip-text text-transparent">
+          <span className="bg-linear-to-r from-blue-600 via-blue-500 to-blue-400 bg-clip-text text-transparent">
             right place
           </span>
           !
         </h2>
-        <p className="mt-3 max-w-2xl text-zinc-600 sm:text-lg">
+        <p className="mt-4 max-w-2xl text-lg text-zinc-600 leading-relaxed font-medium">
           From electrical to plumbing, pest control to AC — we care for your dream home, office & farm house.
         </p>
       </div>
@@ -135,42 +130,42 @@ function ServiceCard({
   return (
     <Link
       href={`/services#${service.id}`}
-      className="group relative block overflow-hidden rounded-2xl bg-white shadow-xl ring-1 ring-zinc-200/70 transition-all duration-300 hover:-translate-y-2 hover:shadow-2xl hover:ring-2 hover:ring-blue-300/60"
+      className="group relative block overflow-hidden rounded-[2.5rem] bg-white p-2 shadow-2xl ring-1 ring-slate-200 transition-all duration-500 hover:-translate-y-4 hover:shadow-[0_25px_60px_-15px_rgba(0,0,0,0.3)] hover:ring-blue-500/50"
     >
-      <div className="relative aspect-4/3 w-full overflow-hidden">
+      <div className="relative aspect-[4/5] w-full overflow-hidden rounded-[2rem]">
         <Image
           src={service.image}
           alt={service.label}
           fill
-          className="object-cover transition duration-500 group-hover:scale-110"
+          className="object-cover transition duration-700 group-hover:scale-110 group-hover:rotate-2"
           sizes="(max-width: 640px) 100vw, (max-width: 1024px) 50vw, 33vw"
         />
-        {/* Gradient so red label always readable */}
-        <div
-          className="absolute inset-0 bg-linear-to-t from-black/80 via-black/20 to-transparent"
-          aria-hidden
-        />
-        {/* Hover overlay */}
-        <div className="absolute inset-0 flex items-center justify-center bg-blue-900/0 transition duration-300 group-hover:bg-blue-900/25" aria-hidden>
-          <span className="translate-y-3 rounded-full bg-white/20 px-4 py-2 text-base font-semibold text-white opacity-0 backdrop-blur-sm transition duration-300 group-hover:translate-y-0 group-hover:opacity-100">
-            View Service →
-          </span>
+        <div className="absolute inset-0 bg-linear-to-t from-slate-950 via-slate-900/20 to-transparent opacity-80" />
+
+        {/* Hover Action */}
+        <div className="absolute inset-0 flex items-center justify-center opacity-0 transition-all duration-500 group-hover:opacity-100">
+          <div className="translate-y-10 scale-90 rounded-full bg-white px-8 py-3.5 text-sm font-black uppercase text-blue-600 shadow-2xl backdrop-blur-md transition-all duration-500 group-hover:translate-y-0 group-hover:scale-100">
+            Learn More
+          </div>
         </div>
-      </div>
-      {/* Red label – best UI: ribbon style, clear text */}
-      <div className="absolute bottom-0 left-0 right-0 flex justify-center px-3 pb-3 sm:px-4 sm:pb-4">
-        <div
-          className="relative flex min-h-[52px] items-center justify-center rounded-xl px-6 py-3 shadow-xl transition duration-300 group-hover:scale-[1.02]"
-          style={{
-            background: "linear-gradient(135deg, #dc2626 0%, #b91c1c 50%, #991b1b 100%)",
-            boxShadow: "0 4px 14px rgba(185, 28, 28, 0.4), inset 0 1px 0 rgba(255,255,255,0.2)",
-          }}
-        >
-          {/* Subtle top highlight */}
-          <div className="absolute inset-x-2 top-0 h-px rounded-full bg-white/30" aria-hidden />
-          <span className="relative text-sm font-bold uppercase tracking-[0.2em] text-white drop-shadow-md sm:text-base">
-            {service.label}
-          </span>
+
+        {/* Label Overlay */}
+        <div className="absolute bottom-6 left-6 right-6">
+          <div className="flex items-end justify-between gap-4">
+            <div className="space-y-1">
+              <span className="block text-[10px] font-black uppercase tracking-[0.2em] text-blue-400">
+                Service 0{service.id === 'electrical' ? '1' : service.id === 'plumbing' ? '2' : service.id === 'pest-control' ? '3' : service.id === 'ac-refill' ? '4' : service.id === 'carpenter' ? '5' : '6'}
+              </span>
+              <h3 className="text-2xl font-black uppercase tracking-tight text-white leading-none">
+                {service.label}
+              </h3>
+            </div>
+            <div className="flex h-12 w-12 items-center justify-center rounded-full bg-white/10 text-white backdrop-blur-md ring-1 ring-white/20 transition-all duration-300 group-hover:bg-red-600 group-hover:ring-red-600">
+              <svg className="h-5 w-5" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={3} d="M14 5l7 7m0 0l-7 7m7-7H3" />
+              </svg>
+            </div>
+          </div>
         </div>
       </div>
     </Link>

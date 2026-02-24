@@ -72,18 +72,18 @@ function CountUpStat({
   return (
     <div
       ref={ref}
-      className="group relative flex flex-col items-center rounded-2xl border border-amber-200/60 bg-white/80 p-6 text-center shadow-sm backdrop-blur-sm transition hover:border-amber-300 hover:shadow-md"
+      className="group relative flex flex-col items-center rounded-[2.5rem] border border-slate-100 bg-white p-10 text-center shadow-2xl transition-all duration-500 hover:-translate-y-3 hover:shadow-3xl hover:border-blue-500/30"
     >
-      <div className="mb-3 flex h-14 w-14 items-center justify-center rounded-xl bg-red-600/10 text-red-600 transition group-hover:bg-red-600/15">
+      <div className="mb-6 flex h-20 w-20 items-center justify-center rounded-[1.5rem] bg-blue-50 text-blue-600 transition-all duration-500 group-hover:bg-blue-600 group-hover:text-white group-hover:rotate-[10deg] group-hover:shadow-[0_20px_40px_rgba(37,99,235,0.3)]">
         <StatIcon type={icon} />
       </div>
-      <p className="text-3xl font-extrabold tracking-tight text-slate-800 sm:text-4xl">
+      <p className="text-5xl font-black tracking-tighter text-slate-900 sm:text-6xl">
         {showValue}{suffix}
       </p>
-      <p className="mt-0.5 text-sm font-semibold uppercase tracking-wider text-red-600">
+      <p className="mt-3 text-sm font-black uppercase tracking-[0.3em] text-blue-600">
         {label}
       </p>
-      <p className="mt-0.5 text-xs text-slate-500">{sublabel}</p>
+      <p className="mt-1 text-sm font-medium text-slate-400">{sublabel}</p>
     </div>
   );
 }
@@ -164,9 +164,9 @@ export default function StatsAndBenefitsSection() {
     <section className="relative overflow-hidden bg-white">
       {/* Top: Stats – professional block */}
       <div
-        className="relative px-4 py-16 sm:px-6 lg:px-8"
+        className="relative px-4 py-20 sm:px-6 lg:px-8"
         style={{
-          background: "linear-gradient(180deg, #fefce8 0%, #fef9c3 50%, #fef3c7 100%)",
+          background: "linear-gradient(180deg, #fefce8 0%, #fef3c7 50%, #fde68a 100%)",
         }}
       >
         <div className="mx-auto max-w-[90rem]">
@@ -192,7 +192,7 @@ export default function StatsAndBenefitsSection() {
             {BENEFITS.map((item) => (
               <div
                 key={item.title}
-                className="flex items-center gap-4 rounded-xl border border-slate-200/80 bg-slate-50/50 px-5 py-4 transition hover:border-slate-300 hover:bg-slate-50"
+                className="flex items-center gap-5 rounded-2xl border border-slate-200/80 bg-white px-6 py-5 shadow-sm transition-all duration-300 hover:scale-[1.03] hover:shadow-lg hover:border-blue-200"
               >
                 <div className="flex h-12 w-12 shrink-0 items-center justify-center rounded-lg bg-slate-200/80 text-slate-600">
                   <BenefitIcon type={item.icon} />

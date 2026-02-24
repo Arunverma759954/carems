@@ -2,27 +2,32 @@
 
 :root {
   --background: #ffffff;
-  --foreground: #171717;
+  --foreground: #0f172a;
+  --primary: #2563eb;
+  --secondary: #dc2626;
+  --accent: #f59e0b;
 }
 
 @theme inline {
   --color-background: var(--background);
   --color-foreground: var(--foreground);
-  --font-sans: var(--font-geist-sans);
-  --font-mono: var(--font-geist-mono);
-}
-
-@media (prefers-color-scheme: dark) {
-  :root {
-    --background: #0a0a0a;
-    --foreground: #ededed;
-  }
+  --font-sans: var(--font-inter);
+  --font-heading: var(--font-outfit);
 }
 
 body {
   background: var(--background);
   color: var(--foreground);
-  font-family: Arial, Helvetica, sans-serif;
+  font-family: var(--font-sans), sans-serif;
+}
+
+h1,
+h2,
+h3,
+h4,
+h5,
+h6 {
+  font-family: var(--font-heading), sans-serif;
 }
 
 @keyframes fadeIn {
@@ -30,6 +35,7 @@ body {
     opacity: 0;
     transform: translateY(0.5rem);
   }
+
   to {
     opacity: 1;
     transform: translateY(0);
@@ -41,6 +47,7 @@ body {
     opacity: 0;
     transform: translateX(12px);
   }
+
   to {
     opacity: 1;
     transform: translateX(0);
@@ -52,10 +59,12 @@ body {
     opacity: 0;
     transform: scale(0.7);
   }
+
   60% {
     opacity: 1;
     transform: scale(1.08);
   }
+
   100% {
     opacity: 1;
     transform: scale(1);
@@ -67,6 +76,7 @@ body {
     opacity: 0;
     transform: translateY(12px);
   }
+
   100% {
     opacity: 1;
     transform: translateY(0);
@@ -79,19 +89,21 @@ body {
     transform: translateX(0) rotateY(0deg);
     opacity: 1;
   }
+
   100% {
     transform: translateX(var(--hand-offset, -70px)) rotateY(var(--hand-rotate, -32deg));
     opacity: 1;
   }
 }
 
-/* 3D hands: close (rejoin) */
+/* 3D hands: close (rejoin) - Added slight overlap for perfect meeting */
 @keyframes hands-close {
   0% {
     transform: translateX(var(--hand-offset, -70px)) rotateY(var(--hand-rotate, -32deg));
   }
+
   100% {
-    transform: translateX(0) rotateY(0deg);
+    transform: translateX(0px) rotateY(0deg);
   }
 }
 
@@ -108,6 +120,7 @@ body {
     transform: translateX(-220px) rotateY(-35deg);
     opacity: 0.7;
   }
+
   100% {
     transform: translateX(-50px) rotateY(-12deg);
     opacity: 1;
@@ -120,10 +133,33 @@ body {
     transform: translateX(220px) rotateY(35deg);
     opacity: 0.7;
   }
+
   100% {
     transform: translateX(50px) rotateY(12deg);
     opacity: 1;
   }
+}
+
+/* Logo Shimmer effect for premium feel */
+@keyframes logo-shimmer {
+  0% {
+    opacity: 0.8;
+    filter: drop-shadow(0 0 0px rgba(255, 255, 255, 0));
+  }
+
+  50% {
+    opacity: 1;
+    filter: drop-shadow(0 0 15px rgba(255, 255, 255, 0.4));
+  }
+
+  100% {
+    opacity: 0.8;
+    filter: drop-shadow(0 0 0px rgba(255, 255, 255, 0));
+  }
+}
+
+.logo-shimmer {
+  animation: logo-shimmer 2s infinite ease-in-out;
 }
 
 /* Page load: content reveal (smooth entrance) */
@@ -132,6 +168,7 @@ body {
     opacity: 0;
     transform: translateY(20px);
   }
+
   to {
     opacity: 1;
     transform: translateY(0);
@@ -153,6 +190,7 @@ body {
     opacity: 0;
     transform: translateY(32px);
   }
+
   to {
     opacity: 1;
     transform: translateY(0);
@@ -164,6 +202,7 @@ body {
     opacity: 0;
     transform: translateX(-40px);
   }
+
   to {
     opacity: 1;
     transform: translateX(0);
@@ -175,6 +214,7 @@ body {
     opacity: 0;
     transform: translateX(40px);
   }
+
   to {
     opacity: 1;
     transform: translateX(0);
@@ -199,4 +239,35 @@ body {
 
 .section-reveal-right.visible {
   animation: section-reveal-right 1s cubic-bezier(0.22, 1, 0.36, 1) forwards;
+}
+
+/* Pencil-draw splash: circle draws like pencil then logo scales in */
+@keyframes pencil-draw-circle {
+  0% {
+    stroke-dashoffset: 302;
+    opacity: 1;
+  }
+  100% {
+    stroke-dashoffset: 0;
+    opacity: 1;
+  }
+}
+
+@keyframes logo-scale-in {
+  0% {
+    opacity: 0;
+    transform: scale(0.25);
+  }
+  50% {
+    opacity: 1;
+    transform: scale(1.05);
+  }
+  100% {
+    opacity: 1;
+    transform: scale(1);
+  }
+}
+
+.splash-logo-scale-in {
+  animation: logo-scale-in 0.9s cubic-bezier(0.22, 1, 0.36, 1) forwards;
 }

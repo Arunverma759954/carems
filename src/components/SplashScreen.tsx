@@ -5,25 +5,18 @@ import { useEffect, useState, useRef, useCallback } from "react";
 
 const LOGO_SIZE = 180;
 
-// Animation duration – thoda kam, smooth (ms)
-const INITIAL_DELAY = 300;
-const HAND_ENTER_MS = 1100;   // dono haath tut kar aaye
-const HAND_OPEN_MS = 700;     // haath open
-const HAND_CLOSE_MS = 2000;   // haath dheere jude
-const HOLD_MS = 450;          // full logo, phir fly
-const FLY_MS = 900;           // navbar tak
+const INITIAL_DELAY = 200;
+const PENCIL_DRAW_MS = 1400;  // circle pencil-draw
+const LOGO_SCALE_MS = 900;    // logo scaling in
+const HOLD_MS = 600;
+const FLY_MS = 900;
 const OVERLAY_FADE_MS = 400;
-
-// Easing: judte waqt end pe dheere rukna (no jerk)
-const EASE_CLOSE = "cubic-bezier(0.33, 1, 0.68, 1)";
-const EASE_OPEN = "cubic-bezier(0.22, 0.61, 0.36, 1)";
 
 type Phase =
   | "idle"
-  | "hands-enter"   // dono hand tut kar aaye
-  | "hands-open"    // thoda aur open (drama)
-  | "hands-closed"  // jud kar
-  | "hold"          // full logo hold
+  | "pencil-draw"   // circle draws like pencil
+  | "logo-scale"    // logo scales in
+  | "hold"
   | "flying"
   | "done";
 
@@ -50,31 +43,19 @@ export default function SplashScreen({ logoSlotRef, onSplashDone }: Props) {
 
   const startFly = useCallback(() => setPhase("flying"), []);
 
-  // Phase timeline: idle → hands-enter → hands-open → hands-closed → hold → flying → done
   useEffect(() => {
-    const t1 = setTimeout(() => setPhase("hands-enter"), INITIAL_DELAY);
-    const t2 = setTimeout(
-      () => setPhase("hands-open"),
-      INITIAL_DELAY + HAND_ENTER_MS
-    );
-    const t3 = setTimeout(
-      () => setPhase("hands-closed"),
-      INITIAL_DELAY + HAND_ENTER_MS + HAND_OPEN_MS
-    );
+    const t1 = setTimeout(() => setPhase("pencil-draw"), INITIAL_DELAY);
+    const t2 = setTimeout(() => setPhase("logo-scale"), INITIAL_DELAY + PENCIL_DRAW_MS);
+    const t3 = setTimeout(() => setPhase("hold"), INITIAL_DELAY + PENCIL_DRAW_MS + LOGO_SCALE_MS);
     const t4 = setTimeout(
-      () => setPhase("hold"),
-      INITIAL_DELAY + HAND_ENTER_MS + HAND_OPEN_MS + HAND_CLOSE_MS
-    );
-    const t5 = setTimeout(
       startFly,
-      INITIAL_DELAY + HAND_ENTER_MS + HAND_OPEN_MS + HAND_CLOSE_MS + HOLD_MS
+      INITIAL_DELAY + PENCIL_DRAW_MS + LOGO_SCALE_MS + HOLD_MS
     );
     return () => {
       clearTimeout(t1);
       clearTimeout(t2);
       clearTimeout(t3);
       clearTimeout(t4);
-      clearTimeout(t5);
     };
   }, [startFly]);
 
@@ -85,18 +66,11 @@ export default function SplashScreen({ logoSlotRef, onSplashDone }: Props) {
         const el = logoSlotRef.current;
         if (el) {
           const rect = el.getBoundingClientRect();
-          const centerX =
-            typeof window !== "undefined" ? window.innerWidth / 2 : 0;
-          const centerY =
-            typeof window !== "undefined" ? window.innerHeight / 2 : 0;
+          const centerX = typeof window !== "undefined" ? window.innerWidth / 2 : 0;
+          const centerY = typeof window !== "undefined" ? window.innerHeight / 2 : 0;
           const targetCenterX = rect.left + rect.width / 2;
           const targetCenterY = rect.top + rect.height / 2;
-          setFlyStyle({
-            left: rect.left,
-            top: rect.top,
-            width: rect.width,
-            height: rect.height,
-          });
+          setFlyStyle({ left: rect.left, top: rect.top, width: rect.width, height: rect.height });
           setFlyTransform({
             x: targetCenterX - centerX,
             y: targetCenterY - centerY,
@@ -130,67 +104,28 @@ export default function SplashScreen({ logoSlotRef, onSplashDone }: Props) {
   if (phase === "done" && overlayHidden) return null;
 
   const isFlying = phase === "flying" && flyStyle;
-  const handsIdle = phase === "idle";
-  const handsEntering = phase === "hands-enter";
-  const handsAreOpen = phase === "hands-open";
-  const handsClosed = phase === "hands-closed";
-  // Idle se hi dono haath dikhao (tut) - kabhi full logo pehle mat dikhao
-  const showTwoHands =
-    handsIdle ||
-    handsEntering ||
-    handsAreOpen ||
-    handsClosed;
-  const showFullLogo = phase === "hold" || phase === "flying";
-  const applyingFly = phase === "flying";
-
-  // Idle: haath off-screen (enter start). Enter end → open → closed (jud)
-  const leftTransform = handsIdle
-    ? "translateX(-220px) rotateY(-35deg)"
-    : handsAreOpen
-      ? "translateX(-75px) rotateY(-32deg)"
-      : handsClosed
-        ? "translateX(0) rotateY(0deg)"
-        : "translateX(-50px) rotateY(-12deg)";
-
-  const rightTransform = handsIdle
-    ? "translateX(220px) rotateY(35deg)"
-    : handsAreOpen
-      ? "translateX(75px) rotateY(32deg)"
-      : handsClosed
-        ? "translateX(0) rotateY(0deg)"
-        : "translateX(50px) rotateY(12deg)";
-
-  const leftTransitionMs = handsIdle ? 0 : handsAreOpen ? HAND_OPEN_MS : HAND_CLOSE_MS;
-  const rightTransitionMs = leftTransitionMs;
-  const closeEasing = handsClosed ? EASE_CLOSE : EASE_OPEN;
-
-  const leftAnimation = handsEntering
-    ? `hand-enter-left ${HAND_ENTER_MS}ms cubic-bezier(0.22, 0.61, 0.36, 1) forwards`
-    : "none";
-  const rightAnimation = handsEntering
-    ? `hand-enter-right ${HAND_ENTER_MS}ms cubic-bezier(0.22, 0.61, 0.36, 1) forwards`
-    : "none";
+  const showDrawing = phase === "pencil-draw" || phase === "logo-scale" || phase === "hold" || phase === "flying";
+  const showLogo = phase === "logo-scale" || phase === "hold" || phase === "flying";
+  const logoScaling = phase === "logo-scale";
 
   return (
     <div
-      className={`fixed inset-0 z-70 flex items-center justify-center transition-opacity duration-700 ${
-          phase === "done" || overlayHidden
-          ? "pointer-events-none opacity-0"
-          : "opacity-100"
+      className={`fixed inset-0 z-[70] flex items-center justify-center transition-opacity duration-700 ${
+        phase === "done" || overlayHidden ? "pointer-events-none opacity-0" : "opacity-100"
       }`}
       style={{
-        background: "linear-gradient(160deg, #0c1222 0%, #0f172a 40%, #0a0f1a 100%)",
-        boxShadow: "inset 0 0 100px rgba(15, 23, 42, 0.2)",
+        background: "radial-gradient(circle at center, #0f172a 0%, #020617 100%)",
+        boxShadow: "inset 0 0 120px rgba(0,0,0,0.4)",
       }}
     >
-      {/* Logo clear dikhe – center pe soft glow */}
       <div
         className="pointer-events-none absolute inset-0"
         style={{
-          background: "radial-gradient(ellipse 70% 55% at 50% 50%, rgba(255,255,255,0.07) 0%, transparent 58%)",
+          background: "radial-gradient(circle at 50% 50%, rgba(59,130,246,0.08) 0%, transparent 55%)",
         }}
         aria-hidden
       />
+
       <div
         ref={containerRef}
         className="absolute flex items-center justify-center"
@@ -199,91 +134,59 @@ export default function SplashScreen({ logoSlotRef, onSplashDone }: Props) {
           top: "50%",
           width: LOGO_SIZE,
           height: LOGO_SIZE,
-          transform: `translate(-50%, -50%) translate(${flyTransform.x}px, ${flyTransform.y}px) scale(${flyTransform.scale})`,
-          transition: applyingFly
-            ? `transform ${FLY_MS}ms cubic-bezier(0.22, 0.61, 0.36, 1)`
-            : "none",
+          transform: isFlying
+            ? `translate(-50%, -50%) translate(${flyTransform.x}px, ${flyTransform.y}px) scale(${flyTransform.scale})`
+            : "translate(-50%, -50%)",
+          transition: isFlying ? `transform ${FLY_MS}ms cubic-bezier(0.22, 1, 0.36, 1)` : "none",
         }}
       >
-        {showTwoHands ? (
-          <div
-            className="relative flex h-full w-full overflow-visible"
+        {/* Pencil-draw circle: draws around the logo like a pencil outline */}
+        {showDrawing && (
+          <svg
+            className="absolute inset-0 h-full w-full -rotate-90"
+            viewBox="0 0 100 100"
+            fill="none"
+            strokeWidth="2"
+            strokeLinecap="round"
             style={{
-              perspective: "1400px",
-              transformStyle: "preserve-3d",
+              stroke: "url(#pencil-gradient)",
+              strokeDasharray: 302,
+              animation: phase === "pencil-draw"
+                ? `pencil-draw-circle ${PENCIL_DRAW_MS}ms cubic-bezier(0.22, 1, 0.36, 1) forwards`
+                : "none",
+              strokeDashoffset: phase === "pencil-draw" ? 302 : 0,
             }}
           >
-            {/* Left hand: left side se aata hai, fir jud kar beech mein */}
-            <div
-              className="absolute inset-y-0 left-0 w-1/2 overflow-visible"
-              style={{
-                transformStyle: "preserve-3d",
-                transformOrigin: "right center",
-                transform: handsEntering ? undefined : leftTransform,
-                transition: handsEntering || handsIdle
-                  ? "none"
-                  : `transform ${leftTransitionMs}ms ${closeEasing}`,
-                animation: leftAnimation,
-              }}
-            >
-              <div
-                className="h-full w-[200%]"
-                style={{
-                  clipPath: "inset(0 50% 0 0)",
-                  backgroundImage: "url(/logo1.png)",
-                  backgroundSize: "100% 100%",
-                  backgroundPosition: "left center",
-                }}
-              />
-            </div>
-            {/* Right hand: right side se aata hai, fir jud kar beech mein */}
-            <div
-              className="absolute inset-y-0 right-0 w-1/2 overflow-visible"
-              style={{
-                transformStyle: "preserve-3d",
-                transformOrigin: "left center",
-                transform: handsEntering ? undefined : rightTransform,
-                transition: handsEntering || handsIdle
-                  ? "none"
-                  : `transform ${rightTransitionMs}ms ${closeEasing}`,
-                animation: rightAnimation,
-              }}
-            >
-              <div
-                className="h-full w-[200%]"
-                style={{
-                  clipPath: "inset(0 0 0 50%)",
-                  backgroundImage: "url(/logo1.png)",
-                  backgroundSize: "100% 100%",
-                  backgroundPosition: "right center",
-                }}
-              />
-            </div>
-          </div>
-        ) : (
-          <div className="relative h-full w-full">
+            <defs>
+              <linearGradient id="pencil-gradient" x1="0%" y1="0%" x2="100%" y2="100%">
+                <stop offset="0%" stopColor="#94a3b8" />
+                <stop offset="50%" stopColor="#64748b" />
+                <stop offset="100%" stopColor="#475569" />
+              </linearGradient>
+            </defs>
+            <circle cx="50" cy="50" r="48" />
+          </svg>
+        )}
+
+        {/* Logo: scales in (pencil ke baad) */}
+        {showLogo && (
+          <div
+            className={`relative h-full w-full ${logoScaling ? "splash-logo-scale-in" : ""}`}
+          >
             <Image
               src="/logo1.png"
               alt="CareMS"
               fill
               priority
-              className="object-contain"
+              className="object-contain drop-shadow-lg"
               sizes="180px"
             />
           </div>
         )}
       </div>
 
-      {!isFlying && (
-        <div
-          className="pointer-events-none absolute left-1/2 top-1/2 h-56 w-56 -translate-x-1/2 -translate-y-1/2 rounded-full bg-red-500/25 blur-[60px]"
-          aria-hidden
-        />
-      )}
-
-      {/* Subtle loading text - only during hold */}
       {phase === "hold" && (
-        <p className="pointer-events-none absolute bottom-[18%] left-1/2 -translate-x-1/2 text-xs font-medium uppercase tracking-[0.3em] text-white/40">
+        <p className="pointer-events-none absolute bottom-[20%] left-1/2 -translate-x-1/2 text-xs font-semibold uppercase tracking-[0.25em] text-white/50">
           Welcome
         </p>
       )}
