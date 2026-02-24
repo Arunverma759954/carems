@@ -48,7 +48,7 @@ export default function HowItWorksSection() {
           <div className="absolute -right-20 -bottom-20 h-64 w-64 rounded-full bg-red-600/10 blur-[100px] transition-all duration-1000 group-hover:bg-red-500/20" />
 
           <div className="relative z-10 flex flex-col justify-center">
-            <h3 className="text-3xl font-black uppercase leading-[0.9] tracking-tighter text-white sm:text-4xl lg:text-5xl">
+            <h3 className="text-2xl font-black uppercase leading-[0.9] tracking-tighter text-white sm:text-3xl lg:text-4xl">
               Largest<br />
               <span className="text-blue-500">Home Service</span><br />
               Provider
@@ -88,7 +88,7 @@ export default function HowItWorksSection() {
 
       {/* How it works – heading */}
       <div className="mx-auto mt-24 max-w-4xl text-center">
-        <h2 className="text-3xl font-black uppercase tracking-tight text-slate-800 sm:text-4xl lg:text-5xl">
+        <h2 className="text-2xl font-black uppercase tracking-tight text-slate-800 sm:text-3xl lg:text-4xl">
           How it works
         </h2>
         <p className="mt-6 text-xl text-blue-600 font-semibold sm:text-2xl">
