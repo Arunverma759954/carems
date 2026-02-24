@@ -159,12 +159,16 @@ export default function SplashScreen({ logoSlotRef, onSplashDone }: Props) {
                 transition: isFlying ? "transform 0.1s" : "transform 0.4s ease-out",
               }}
             >
-              {/* Logo – scratch reveal (CLEAN - NO BORDER) */}
-              <div
-                className="absolute inset-0 overflow-hidden"
-              >
+              {/* Logo – scratch reveal (initially fully hidden so koi flash na ho) */}
+              <div className="absolute inset-0 overflow-hidden">
                 <div
                   className={`absolute inset-0 ${isDraw ? "splash-logo-reveal-wipe" : ""}`}
+                  style={{
+                    clipPath: isDraw
+                      ? "polygon(0 0, 0 0, 0 100%, 0 100%)"
+                      : "inset(0 0 0 0)",
+                    opacity: isDraw ? 0 : 1,
+                  }}
                 >
                   <div className={`relative h-full w-full ${isHold ? "splash-logo-finish-pop" : ""}`}>
                     <Image

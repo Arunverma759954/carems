@@ -42,8 +42,8 @@ export default function ClientBody({
         logoSlotRef={logoSlotRef}
         onSplashDone={() => setSplashDone(true)}
       />
-      {/* Header + logo sirf jab splash pura khatam ho jaye tab hi dikhaye */}
-      {splashDone && <Header logoSlotRef={logoSlotRef} showLogo={true} />}
+      {/* Header hamesha dikhe, lekin navbar ka logo tab tak hidden rahe jab tak splash khatam na ho */}
+      <Header logoSlotRef={logoSlotRef} showLogo={splashDone} />
       <main
         className={`content-reveal ${contentRevealed ? "revealed" : ""}`}
       >
