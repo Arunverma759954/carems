@@ -6,10 +6,10 @@ import { useEffect, useState, useCallback } from "react";
 const LOGO_SIZE = 200;
 
 const INITIAL_DELAY = 400;
-const STROKE_DRAW_MS = 1150;   // SVG frame outline draws (stroke animation)
-const LOGO_REVEAL_DELAY_MS = 280; // logo reveal + pencil start after frame starts
-const LOGO_REVEAL_MS = 1800;   // pencil + logo wipe duration
-const DRAW_PHASE_MS = STROKE_DRAW_MS + LOGO_REVEAL_MS; // total draw phase
+const STROKE_DRAW_MS = 1150;
+const LOGO_REVEAL_DELAY_MS = 280;
+const LOGO_REVEAL_MS = 1800;
+const DRAW_PHASE_MS = STROKE_DRAW_MS + LOGO_REVEAL_MS;
 const HOLD_MS = 750;
 const FLY_MS = 900;
 const OVERLAY_FADE_MS = 400;
@@ -80,7 +80,7 @@ export default function SplashScreen({ logoSlotRef, onSplashDone }: Props) {
       });
     });
     return () => cancelAnimationFrame(id);
-  }, [phase, logoSlotRef]);
+  }, [phase, logoSlotRef, onSplashDone]);
 
   useEffect(() => {
     if (phase !== "flying" || !flyStyle) return;
@@ -105,17 +105,14 @@ export default function SplashScreen({ logoSlotRef, onSplashDone }: Props) {
 
   return (
     <div
-      className={`fixed inset-0 z-[70] flex items-center justify-center transition-opacity duration-700 ${
-        phase === "done" || overlayHidden ? "pointer-events-none opacity-0" : "opacity-100"
-      }`}
+      className={`fixed inset-0 z-[70] flex items-center justify-center transition-opacity duration-700 ${phase === "done" || overlayHidden ? "pointer-events-none opacity-0" : "opacity-100"
+        }`}
       style={{
-        /* Paper / canvas style – agency-level background */
         background:
           "radial-gradient(ellipse 80% 70% at 50% 40%, #1e293b 0%, transparent 50%), radial-gradient(circle at 50% 50%, #0f172a 0%, #020617 100%)",
         boxShadow: "inset 0 0 180px rgba(0,0,0,0.35)",
       }}
     >
-      {/* Subtle vignette + paper grain feel */}
       <div
         className="pointer-events-none absolute inset-0 opacity-[0.04]"
         style={{
@@ -131,7 +128,6 @@ export default function SplashScreen({ logoSlotRef, onSplashDone }: Props) {
         aria-hidden
       />
 
-      {/* 3D scene: perspective → tilted paper → logo + pencil */}
       <div
         className="absolute inset-0 flex items-center justify-center"
         style={{
@@ -161,40 +157,14 @@ export default function SplashScreen({ logoSlotRef, onSplashDone }: Props) {
                 backfaceVisibility: "hidden",
                 transform: isFlying ? "none" : "rotateX(-18deg) rotateY(2deg)",
                 transition: isFlying ? "transform 0.1s" : "transform 0.4s ease-out",
-                boxShadow: isFlying
-                  ? "none"
-                  : "0 30px 60px rgba(0,0,0,0.5), 0 0 0 1px rgba(255,255,255,0.05) inset",
-                borderRadius: "16px",
               }}
             >
-              {/* 1) Stroke – frame outline draws */}
-              <svg
-                className="absolute inset-0 h-full w-full"
-                viewBox="0 0 200 200"
-                fill="none"
-                strokeWidth="2.5"
-                strokeLinecap="round"
-                strokeLinejoin="round"
-                style={{
-                  stroke: "rgba(148, 163, 184, 0.9)",
-                  strokeDasharray: 740,
-                  strokeDashoffset: isDraw ? 740 : 0,
-                  animation: isDraw ? "stroke-draw-frame 1.15s cubic-bezier(0.22, 1, 0.36, 1) forwards" : "none",
-                }}
-              >
-                <rect x="4" y="4" width="192" height="192" rx="16" ry="16" />
-              </svg>
-
-              {/* 2) Logo – scratch reveal */}
+              {/* Logo – scratch reveal (CLEAN - NO BORDER) */}
               <div
-                className="absolute inset-[6] overflow-hidden rounded-xl"
-                style={{ borderRadius: "12px" }}
+                className="absolute inset-0 overflow-hidden"
               >
                 <div
                   className={`absolute inset-0 ${isDraw ? "splash-logo-reveal-wipe" : ""}`}
-                  style={{
-                    clipPath: isDraw ? undefined : "inset(0 0 0 0 round 12px)",
-                  }}
                 >
                   <div className={`relative h-full w-full ${isHold ? "splash-logo-finish-pop" : ""}`}>
                     <Image
@@ -208,7 +178,7 @@ export default function SplashScreen({ logoSlotRef, onSplashDone }: Props) {
                   </div>
                 </div>
 
-                {/* 3) 3D Pencil – depth, rotateY/Z, move across paper */}
+                {/* 3D Pencil */}
                 {isDraw && (
                   <div className="absolute inset-0 z-10" style={{ transformStyle: "preserve-3d" }} aria-hidden>
                     <div
