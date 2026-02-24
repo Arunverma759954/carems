@@ -27,7 +27,7 @@ const FLOATING_LINKS = [
 
 export default function ServicesSection() {
   return (
-    <section className="relative overflow-hidden bg-white px-4 py-24 sm:px-6 lg:px-8">
+    <section className="relative overflow-hidden bg-white px-4 py-16 sm:px-6 lg:px-8">
       {/* Premium modern background */}
       <div className="absolute inset-x-0 -top-40 -z-10 transform-gpu overflow-hidden blur-3xl sm:-top-80" aria-hidden="true">
         <div className="relative left-[calc(50%-11rem)] aspect-[1155/678] w-[36.125rem] -translate-x-1/2 rotate-[30deg] bg-linear-to-tr from-[#ff80b5] to-[#9089fc] opacity-10 sm:left-[calc(50%-30rem)] sm:w-[72.1875rem]" style={{ clipPath: 'polygon(74.1% 44.1%, 100% 61.6%, 97.5% 26.9%, 85.5% 0.1%, 80.7% 2%, 72.5% 32.5%, 60.2% 62.4%, 52.4% 68.1%, 47.5% 58.3%, 45.2% 34.5%, 27.5% 76.7%, 0.1% 64.9%, 17.9% 100%, 27.6% 76.8%, 76.1% 97.7%, 74.1% 44.1%)' }}></div>
@@ -37,7 +37,7 @@ export default function ServicesSection() {
       {/* Blue accent line + heading */}
       <div className="relative mx-auto max-w-[90rem]">
         <div className="h-1.5 w-24 rounded-full bg-linear-to-r from-blue-600 to-blue-400 sm:w-32" />
-        <h2 className="mt-8 text-3xl font-black uppercase tracking-tight text-zinc-800 sm:text-4xl lg:text-6xl">
+        <h2 className="mt-6 text-3xl font-black uppercase tracking-tight text-zinc-800 sm:text-4xl lg:text-6xl">
           You&apos;re at the{" "}
           <span className="bg-linear-to-r from-blue-600 via-blue-500 to-blue-400 bg-clip-text text-transparent">
             right place

@@ -12,7 +12,7 @@ export default function Home() {
       <BannerSlider />
       <main>
         <RevealOnScroll direction="up">
-          <section className="mx-auto max-w-[90rem] px-4 py-12 text-center sm:px-6 lg:px-8">
+          <section className="mx-auto max-w-[90rem] px-4 py-8 text-center sm:px-6 lg:px-8">
             <h2 className="text-2xl font-bold text-zinc-800 sm:text-3xl">
               Welcome to CareMS Maintenance Services
             </h2>

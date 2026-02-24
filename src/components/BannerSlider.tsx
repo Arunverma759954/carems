@@ -97,7 +97,7 @@ export default function BannerSlider() {
       onMouseEnter={() => setIsPaused(true)}
       onMouseLeave={() => setIsPaused(false)}
     >
-      {/* Aspect-ratio based height so image bina gap ke clean lage (thoda crop allowed) */}
+      {/* Aspect-ratio based height – mobile pe full image dikhe, bade screens pe hero look */}
       <div className="relative w-full aspect-[16/9] sm:aspect-[20/9] md:aspect-[21/9] overflow-hidden">
         {SLIDES.map((slide, index) => {
           const active = index === current;
@@ -111,13 +111,15 @@ export default function BannerSlider() {
               }}
               aria-hidden={!active}
             >
-              {/* Background image – object-cover so box ke andar top/bottom gap na aaye */}
+              {/* Background image  
+                 - Mobile/tablet: object-contain → poori image clear dikhe (thoda side/top gap chalega)
+                 - Large screens: object-cover → full-width hero feel */}
               <Image
                 src={slide.src}
                 alt={slide.alt}
                 fill
                 priority={index === 0}
-                className="object-cover object-center brightness-[0.55]"
+                className="object-contain lg:object-cover object-center brightness-[0.55]"
                 style={{
                   transition: active ? 'transform 12s linear' : 'none',
                   transform: active ? 'scale(1.1) rotate(0.5deg)' : 'scale(1.0) rotate(0deg)',
