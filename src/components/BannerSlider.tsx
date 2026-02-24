@@ -97,8 +97,8 @@ export default function BannerSlider() {
       onMouseEnter={() => setIsPaused(true)}
       onMouseLeave={() => setIsPaused(false)}
     >
-      {/* CONSTANT BOX SIZE FOR ALL SCREENS */}
-      <div className="relative h-[480px] xs:h-[580px] sm:h-[750px] md:h-[850px] w-full overflow-hidden">
+      {/* Aspect-ratio based height so image bina gap ke clean lage (thoda crop allowed) */}
+      <div className="relative w-full aspect-[16/9] sm:aspect-[20/9] md:aspect-[21/9] overflow-hidden">
         {SLIDES.map((slide, index) => {
           const active = index === current;
           return (
@@ -111,13 +111,13 @@ export default function BannerSlider() {
               }}
               aria-hidden={!active}
             >
-              {/* Background image with sharp appearance */}
+              {/* Background image – object-cover so box ke andar top/bottom gap na aaye */}
               <Image
                 src={slide.src}
                 alt={slide.alt}
                 fill
                 priority={index === 0}
-                className="object-cover brightness-[0.55]"
+                className="object-cover object-center brightness-[0.55]"
                 style={{
                   transition: active ? 'transform 12s linear' : 'none',
                   transform: active ? 'scale(1.1) rotate(0.5deg)' : 'scale(1.0) rotate(0deg)',
