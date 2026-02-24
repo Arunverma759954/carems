@@ -34,13 +34,13 @@ function RotatingPencil({ active, delay, duration = 1.0 }: { active: boolean; de
     <div
       className="absolute z-50 pointer-events-none"
       style={{
-        width: 54,
-        height: 54,
+        width: active ? (typeof window !== 'undefined' && window.innerWidth < 640 ? 32 : 54) : 0,
+        height: active ? (typeof window !== 'undefined' && window.innerWidth < 640 ? 32 : 54) : 0,
         top: '50%',
         left: 0,
         transform: 'translate(-50%, -50%) rotate(25deg)',
         opacity: 0,
-        filter: 'drop-shadow(0 6px 8px rgba(0,0,0,0.6))',
+        filter: 'drop-shadow(0 4px 6px rgba(0,0,0,0.6))',
         animation: active ? `pencil-scribble-move ${duration}s cubic-bezier(0.4, 0, 0.2, 1) ${delay}s forwards` : 'none',
       }}
     >
@@ -98,7 +98,7 @@ export default function BannerSlider() {
       onMouseLeave={() => setIsPaused(false)}
     >
       {/* CONSTANT BOX SIZE FOR ALL SCREENS */}
-      <div className="relative h-[650px] sm:h-[750px] md:h-[850px] w-full overflow-hidden">
+      <div className="relative h-[500px] xs:h-[600px] sm:h-[750px] md:h-[850px] w-full overflow-hidden">
         {SLIDES.map((slide, index) => {
           const active = index === current;
           return (
@@ -128,17 +128,16 @@ export default function BannerSlider() {
               {/* CENTERED CONTENT - SYMMETRICAL DESIGN */}
               <div className="absolute inset-0 z-20 flex items-center justify-center p-6 md:p-12">
                 <div
-                  className={`relative w-full max-w-6xl p-10 sm:p-14 md:p-20 flex flex-col items-center justify-center transition-all duration-1000 ${active ? 'opacity-100 scale-100' : 'opacity-0 scale-95'}`}
+                  className={`relative w-full max-w-6xl p-6 sm:p-14 md:p-20 flex flex-col items-center justify-center transition-all duration-1000 ${active ? 'opacity-100 scale-100' : 'opacity-0 scale-95'}`}
                 >
 
                   {/* LOGO AREA - Compact Reveal */}
-                  <div className="relative mb-6 h-16 w-32 sm:h-20 sm:w-40 flex items-center justify-center">
+                  <div className="relative mb-4 h-12 w-24 sm:h-20 sm:w-40 flex items-center justify-center">
                     <div className={`relative w-full h-full flex items-center justify-center transition-all duration-700 ${active ? 'opacity-100' : 'opacity-0'}`}>
                       <Image
                         src="/logo1.png"
                         alt="Care Logo"
-                        width={130}
-                        height={80}
+                        fill
                         className="object-contain drop-shadow-lg"
                         style={{
                           clipPath: active ? 'inset(0 0% 0 0)' : 'inset(0 100% 0 0)',
@@ -165,7 +164,7 @@ export default function BannerSlider() {
 
                   {/* MAIN HEADING - Compact & Professional */}
                   <div className="relative mb-4 text-center max-w-4xl">
-                    <h1 className="text-2xl xs:text-4xl sm:text-5xl md:text-7xl font-black uppercase tracking-tighter leading-[0.9] text-white">
+                    <h1 className="text-3xl xs:text-4xl sm:text-5xl md:text-7xl font-black uppercase tracking-tighter leading-[0.9] text-white">
                       <div className="relative overflow-hidden pt-1">
                         <span
                           className="block"
@@ -194,7 +193,7 @@ export default function BannerSlider() {
                   </div>
 
                   {/* UNDERLINE - Realistic Scratch (Smaller Scale) */}
-                  <div className="relative w-48 sm:w-64 h-4 mb-4">
+                  <div className="relative w-32 sm:w-64 h-3 sm:h-4 mb-4">
                     <svg viewBox="0 0 300 24" className="w-full h-full overflow-visible drop-shadow-md">
                       <path
                         d="M20 12 Q80 4, 150 20 Q220 4, 280 12"
@@ -216,7 +215,7 @@ export default function BannerSlider() {
                   {/* DESCRIPTION - Compact & Clear */}
                   <div className="relative mb-8 max-w-xl px-4">
                     <p
-                      className="text-xs sm:text-base font-medium text-slate-100 leading-relaxed opacity-95 text-center"
+                      className="text-[10px] sm:text-base font-medium text-slate-100 leading-relaxed opacity-95 text-center"
                       style={{
                         clipPath: active ? 'inset(0 0% 0 0)' : 'inset(0 100% 0 0)',
                         transition: active ? 'clip-path 1s cubic-bezier(0.19, 1, 0.22, 1) 3.8s' : 'none'
@@ -237,7 +236,7 @@ export default function BannerSlider() {
                     >
                       <Link
                         href="/contact"
-                        className="group relative inline-flex items-center gap-3 overflow-hidden rounded-xl bg-gradient-to-r from-red-600 to-red-700 px-8 py-4 text-sm sm:text-base font-black uppercase text-white transition-all hover:bg-white hover:text-red-600 shadow-[0_15px_30px_rgba(220,38,38,0.3)] hover:shadow-[0_20px_45px_rgba(220,38,38,0.5)]"
+                        className="group relative inline-flex items-center gap-3 overflow-hidden rounded-xl bg-gradient-to-r from-red-600 to-red-700 px-6 py-3 sm:px-8 sm:py-4 text-xs sm:text-base font-black uppercase text-white transition-all hover:bg-white hover:text-red-600 shadow-[0_15px_30px_rgba(220,38,38,0.3)] hover:shadow-[0_20px_45px_rgba(220,38,38,0.5)]"
                       >
                         <span className="relative z-10 flex items-center gap-3">
                           BOOK YOUR SERVICE
