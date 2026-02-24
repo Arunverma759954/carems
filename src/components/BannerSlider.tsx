@@ -271,8 +271,8 @@ export default function BannerSlider() {
           );
         })}
 
-        {/* DOTS NAVIGATION - BOTTOM SYMMETRY */}
-        <div className="absolute bottom-16 left-1/2 z-40 flex -translate-x-1/2 gap-5">
+        {/* DOTS NAVIGATION - bilkul banner ke bottom ke paas */}
+        <div className="absolute bottom-4 sm:bottom-6 left-1/2 z-40 flex -translate-x-1/2 gap-5">
           {SLIDES.map((_, i) => (
             <button
               key={i}
