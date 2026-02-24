@@ -97,8 +97,8 @@ export default function BannerSlider() {
       onMouseEnter={() => setIsPaused(true)}
       onMouseLeave={() => setIsPaused(false)}
     >
-      {/* Responsive hero height – thoda compact rakha taaki mobile pe extra khaali space bhi na लगे */}
-      <div className="relative w-full min-h-[340px] sm:min-h-[380px] md:min-h-[460px] lg:min-h-[560px] overflow-hidden">
+      {/* Responsive hero height – no left/right gap, hero feel (thoda top/bottom crop chalega) */}
+      <div className="relative w-full min-h-[360px] sm:min-h-[420px] md:min-h-[520px] lg:min-h-[620px] overflow-hidden">
         {SLIDES.map((slide, index) => {
           const active = index === current;
           return (
@@ -111,22 +111,19 @@ export default function BannerSlider() {
               }}
               aria-hidden={!active}
             >
-              {/* Background image – object-contain so poori banner image clear dikhe (no crop).  
-                 Gap area ko same white background diya hai taaki slide ka part lage. */}
-              <div className="absolute inset-0 bg-white">
-                <Image
-                  src={slide.src}
-                  alt={slide.alt}
-                  fill
-                  priority={index === 0}
-                  className="object-contain object-center brightness-[0.9]"
-                  style={{
-                    transition: active ? 'transform 12s linear' : 'none',
-                    transform: active ? 'scale(1.02) rotate(0deg)' : 'scale(1.0) rotate(0deg)',
-                  }}
-                  sizes="100vw"
-                />
-              </div>
+              {/* Background image – object-cover so left/right gap na aaye (thoda crop allowed) */}
+              <Image
+                src={slide.src}
+                alt={slide.alt}
+                fill
+                priority={index === 0}
+                className="object-cover object-center brightness-[0.8]"
+                style={{
+                  transition: active ? "transform 12s linear" : "none",
+                  transform: active ? "scale(1.08) rotate(0deg)" : "scale(1.0) rotate(0deg)",
+                }}
+                sizes="100vw"
+              />
 
               {/* CENTERED CONTENT - SYMMETRICAL DESIGN */}
               <div className="absolute inset-0 z-20 flex items-center justify-center p-6 md:p-12">
