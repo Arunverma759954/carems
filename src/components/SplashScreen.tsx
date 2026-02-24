@@ -1,24 +1,20 @@
 "use client";
 
 import Image from "next/image";
-import { useEffect, useState, useRef, useCallback } from "react";
+import { useEffect, useState, useCallback } from "react";
 
-const LOGO_SIZE = 180;
+const LOGO_SIZE = 200;
 
-const INITIAL_DELAY = 200;
-const PENCIL_DRAW_MS = 1400;  // circle pencil-draw
-const LOGO_SCALE_MS = 900;    // logo scaling in
-const HOLD_MS = 600;
+const INITIAL_DELAY = 400;
+const STROKE_DRAW_MS = 1150;   // SVG frame outline draws (stroke animation)
+const LOGO_REVEAL_DELAY_MS = 280; // logo reveal + pencil start after frame starts
+const LOGO_REVEAL_MS = 1800;   // pencil + logo wipe duration
+const DRAW_PHASE_MS = STROKE_DRAW_MS + LOGO_REVEAL_MS; // total draw phase
+const HOLD_MS = 750;
 const FLY_MS = 900;
 const OVERLAY_FADE_MS = 400;
 
-type Phase =
-  | "idle"
-  | "pencil-draw"   // circle draws like pencil
-  | "logo-scale"    // logo scales in
-  | "hold"
-  | "flying"
-  | "done";
+type Phase = "idle" | "draw" | "hold" | "flying" | "done";
 
 type Props = {
   logoSlotRef: React.RefObject<HTMLDivElement | null>;
@@ -39,23 +35,23 @@ export default function SplashScreen({ logoSlotRef, onSplashDone }: Props) {
     scale: number;
   }>({ x: 0, y: 0, scale: 1 });
   const [overlayHidden, setOverlayHidden] = useState(false);
-  const containerRef = useRef<HTMLDivElement>(null);
 
   const startFly = useCallback(() => setPhase("flying"), []);
 
   useEffect(() => {
-    const t1 = setTimeout(() => setPhase("pencil-draw"), INITIAL_DELAY);
-    const t2 = setTimeout(() => setPhase("logo-scale"), INITIAL_DELAY + PENCIL_DRAW_MS);
-    const t3 = setTimeout(() => setPhase("hold"), INITIAL_DELAY + PENCIL_DRAW_MS + LOGO_SCALE_MS);
-    const t4 = setTimeout(
+    const t1 = setTimeout(() => setPhase("draw"), INITIAL_DELAY);
+    const t2 = setTimeout(
+      () => setPhase("hold"),
+      INITIAL_DELAY + DRAW_PHASE_MS
+    );
+    const t3 = setTimeout(
       startFly,
-      INITIAL_DELAY + PENCIL_DRAW_MS + LOGO_SCALE_MS + HOLD_MS
+      INITIAL_DELAY + DRAW_PHASE_MS + HOLD_MS
     );
     return () => {
       clearTimeout(t1);
       clearTimeout(t2);
       clearTimeout(t3);
-      clearTimeout(t4);
     };
   }, [startFly]);
 
@@ -104,9 +100,8 @@ export default function SplashScreen({ logoSlotRef, onSplashDone }: Props) {
   if (phase === "done" && overlayHidden) return null;
 
   const isFlying = phase === "flying" && flyStyle;
-  const showDrawing = phase === "pencil-draw" || phase === "logo-scale" || phase === "hold" || phase === "flying";
-  const showLogo = phase === "logo-scale" || phase === "hold" || phase === "flying";
-  const logoScaling = phase === "logo-scale";
+  const isDraw = phase === "draw";
+  const isHold = phase === "hold";
 
   return (
     <div
@@ -114,79 +109,158 @@ export default function SplashScreen({ logoSlotRef, onSplashDone }: Props) {
         phase === "done" || overlayHidden ? "pointer-events-none opacity-0" : "opacity-100"
       }`}
       style={{
-        background: "radial-gradient(circle at center, #0f172a 0%, #020617 100%)",
-        boxShadow: "inset 0 0 120px rgba(0,0,0,0.4)",
+        /* Paper / canvas style – agency-level background */
+        background:
+          "radial-gradient(ellipse 80% 70% at 50% 40%, #1e293b 0%, transparent 50%), radial-gradient(circle at 50% 50%, #0f172a 0%, #020617 100%)",
+        boxShadow: "inset 0 0 180px rgba(0,0,0,0.35)",
       }}
     >
+      {/* Subtle vignette + paper grain feel */}
+      <div
+        className="pointer-events-none absolute inset-0 opacity-[0.04]"
+        style={{
+          backgroundImage: `url("data:image/svg+xml,%3Csvg viewBox='0 0 256 256' xmlns='http://www.w3.org/2000/svg'%3E%3Cfilter id='n'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='0.9' numOctaves='4' stitchTiles='stitch'/%3E%3C/filter%3E%3Crect width='100%25' height='100%25' filter='url(%23n)'/%3E%3C/svg%3E")`,
+        }}
+        aria-hidden
+      />
       <div
         className="pointer-events-none absolute inset-0"
         style={{
-          background: "radial-gradient(circle at 50% 50%, rgba(59,130,246,0.08) 0%, transparent 55%)",
+          background: "radial-gradient(circle at 50% 50%, rgba(59,130,246,0.06) 0%, transparent 60%)",
         }}
         aria-hidden
       />
 
+      {/* 3D scene: perspective → tilted paper → logo + pencil */}
       <div
-        ref={containerRef}
-        className="absolute flex items-center justify-center"
+        className="absolute inset-0 flex items-center justify-center"
         style={{
-          left: "50%",
-          top: "50%",
-          width: LOGO_SIZE,
-          height: LOGO_SIZE,
-          transform: isFlying
-            ? `translate(-50%, -50%) translate(${flyTransform.x}px, ${flyTransform.y}px) scale(${flyTransform.scale})`
-            : "translate(-50%, -50%)",
-          transition: isFlying ? `transform ${FLY_MS}ms cubic-bezier(0.22, 1, 0.36, 1)` : "none",
+          perspective: "1400px",
+          perspectiveOrigin: "center center",
         }}
       >
-        {/* Pencil-draw circle: draws around the logo like a pencil outline */}
-        {showDrawing && (
-          <svg
-            className="absolute inset-0 h-full w-full -rotate-90"
-            viewBox="0 0 100 100"
-            fill="none"
-            strokeWidth="2"
-            strokeLinecap="round"
-            style={{
-              stroke: "url(#pencil-gradient)",
-              strokeDasharray: 302,
-              animation: phase === "pencil-draw"
-                ? `pencil-draw-circle ${PENCIL_DRAW_MS}ms cubic-bezier(0.22, 1, 0.36, 1) forwards`
-                : "none",
-              strokeDashoffset: phase === "pencil-draw" ? 302 : 0,
-            }}
-          >
-            <defs>
-              <linearGradient id="pencil-gradient" x1="0%" y1="0%" x2="100%" y2="100%">
-                <stop offset="0%" stopColor="#94a3b8" />
-                <stop offset="50%" stopColor="#64748b" />
-                <stop offset="100%" stopColor="#475569" />
-              </linearGradient>
-            </defs>
-            <circle cx="50" cy="50" r="48" />
-          </svg>
-        )}
+        <div
+          className="absolute overflow-visible"
+          style={{
+            left: "50%",
+            top: "50%",
+            width: LOGO_SIZE,
+            height: LOGO_SIZE,
+            transformStyle: "preserve-3d",
+            transform: isFlying
+              ? `translate(-50%, -50%) translate(${flyTransform.x}px, ${flyTransform.y}px) scale(${flyTransform.scale})`
+              : "translate(-50%, -50%)",
+            transition: isFlying ? `transform ${FLY_MS}ms cubic-bezier(0.22, 1, 0.36, 1)` : "none",
+          }}
+        >
+          {phase !== "idle" && (
+            <div
+              className="relative h-full w-full"
+              style={{
+                transformStyle: "preserve-3d",
+                backfaceVisibility: "hidden",
+                transform: isFlying ? "none" : "rotateX(-18deg) rotateY(2deg)",
+                transition: isFlying ? "transform 0.1s" : "transform 0.4s ease-out",
+                boxShadow: isFlying
+                  ? "none"
+                  : "0 30px 60px rgba(0,0,0,0.5), 0 0 0 1px rgba(255,255,255,0.05) inset",
+                borderRadius: "16px",
+              }}
+            >
+              {/* 1) Stroke – frame outline draws */}
+              <svg
+                className="absolute inset-0 h-full w-full"
+                viewBox="0 0 200 200"
+                fill="none"
+                strokeWidth="2.5"
+                strokeLinecap="round"
+                strokeLinejoin="round"
+                style={{
+                  stroke: "rgba(148, 163, 184, 0.9)",
+                  strokeDasharray: 740,
+                  strokeDashoffset: isDraw ? 740 : 0,
+                  animation: isDraw ? "stroke-draw-frame 1.15s cubic-bezier(0.22, 1, 0.36, 1) forwards" : "none",
+                }}
+              >
+                <rect x="4" y="4" width="192" height="192" rx="16" ry="16" />
+              </svg>
 
-        {/* Logo: scales in (pencil ke baad) */}
-        {showLogo && (
-          <div
-            className={`relative h-full w-full ${logoScaling ? "splash-logo-scale-in" : ""}`}
-          >
-            <Image
-              src="/logo1.png"
-              alt="CareMS"
-              fill
-              priority
-              className="object-contain drop-shadow-lg"
-              sizes="180px"
-            />
-          </div>
-        )}
+              {/* 2) Logo – scratch reveal */}
+              <div
+                className="absolute inset-[6] overflow-hidden rounded-xl"
+                style={{ borderRadius: "12px" }}
+              >
+                <div
+                  className={`absolute inset-0 ${isDraw ? "splash-logo-reveal-wipe" : ""}`}
+                  style={{
+                    clipPath: isDraw ? undefined : "inset(0 0 0 0 round 12px)",
+                  }}
+                >
+                  <div className={`relative h-full w-full ${isHold ? "splash-logo-finish-pop" : ""}`}>
+                    <Image
+                      src="/logo1.png"
+                      alt="CareMS"
+                      fill
+                      priority
+                      className="object-contain drop-shadow-2xl"
+                      sizes="200px"
+                    />
+                  </div>
+                </div>
+
+                {/* 3) 3D Pencil – depth, rotateY/Z, move across paper */}
+                {isDraw && (
+                  <div className="absolute inset-0 z-10" style={{ transformStyle: "preserve-3d" }} aria-hidden>
+                    <div
+                      className="splash-pencil-3d-move top-1/2 h-9 w-9 -translate-y-1/2 -translate-x-1/2"
+                      style={{
+                        width: "36px",
+                        height: "36px",
+                        transformStyle: "preserve-3d",
+                      }}
+                    >
+                      <svg
+                        viewBox="0 0 24 24"
+                        fill="none"
+                        className="h-full w-full"
+                        style={{
+                          filter: "drop-shadow(0 4px 8px rgba(0,0,0,0.4))",
+                        }}
+                      >
+                        <defs>
+                          <linearGradient id="pencil-body-3d" x1="0%" y1="0%" x2="100%" y2="100%">
+                            <stop offset="0%" stopColor="#cbd5e1" />
+                            <stop offset="50%" stopColor="#94a3b8" />
+                            <stop offset="100%" stopColor="#64748b" />
+                          </linearGradient>
+                        </defs>
+                        <path
+                          d="M12 19l7-7 3 3-7 7-3-3z M18 13l-1.5-7.5L2 2l3.5 14.5L13 18l5-5z M2 2l7.586 7.586a2 2 0 012.828 0L22 12"
+                          stroke="url(#pencil-body-3d)"
+                          strokeWidth="2"
+                          strokeLinecap="round"
+                          strokeLinejoin="round"
+                        />
+                        <path
+                          d="M12 19l-3 3-4-4 3-3 4 4z"
+                          fill="#64748b"
+                          stroke="#475569"
+                          strokeWidth="1.2"
+                          strokeLinecap="round"
+                          strokeLinejoin="round"
+                        />
+                      </svg>
+                    </div>
+                  </div>
+                )}
+              </div>
+            </div>
+          )}
+        </div>
       </div>
 
-      {phase === "hold" && (
-        <p className="pointer-events-none absolute bottom-[20%] left-1/2 -translate-x-1/2 text-xs font-semibold uppercase tracking-[0.25em] text-white/50">
+      {isHold && (
+        <p className="pointer-events-none absolute bottom-[18%] left-1/2 -translate-x-1/2 text-xs font-semibold uppercase tracking-[0.3em] text-white/40">
           Welcome
         </p>
       )}

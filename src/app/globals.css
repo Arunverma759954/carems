@@ -241,10 +241,12 @@ h6 {
   animation: section-reveal-right 1s cubic-bezier(0.22, 1, 0.36, 1) forwards;
 }
 
-/* Pencil-draw splash: circle draws like pencil then logo scales in */
-@keyframes pencil-draw-circle {
+/* ========== Professional Logo Reveal / Hand-drawn / Stroke Animation ========== */
+
+/* 1) Stroke / SVG path: frame outline draws (pen se outline banta hai) */
+@keyframes stroke-draw-frame {
   0% {
-    stroke-dashoffset: 302;
+    stroke-dashoffset: 740;
     opacity: 1;
   }
   100% {
@@ -253,21 +255,107 @@ h6 {
   }
 }
 
-@keyframes logo-scale-in {
+/* 2) Logo reveal: aggressive scratch / scribble – zyada “danger” feel */
+@keyframes logo-reveal-wipe {
   0% {
-    opacity: 0;
-    transform: scale(0.25);
+    /* bilkul kuch bhi visible nahi */
+    clip-path: polygon(0 0, 0 0, 0 100%, 0 100%);
   }
-  50% {
-    opacity: 1;
-    transform: scale(1.05);
+  20% {
+    /* pehla diagonal scratch */
+    clip-path: polygon(
+      0 5%,
+      55% 0,
+      65% 25%,
+      20% 45%,
+      40% 80%,
+      0 100%
+    );
+  }
+  45% {
+    /* dusra scratch – right side se */
+    clip-path: polygon(
+      0 0,
+      100% 0,
+      100% 35%,
+      70% 55%,
+      95% 100%,
+      0 100%
+    );
+  }
+  70% {
+    /* teesra scratch – almost full cover */
+    clip-path: polygon(
+      0 0,
+      100% 0,
+      100% 80%,
+      60% 90%,
+      35% 100%,
+      0 100%
+    );
   }
   100% {
+    /* final – pura logo clean visible with rounded edges */
+    clip-path: inset(0 0 0 0 round 12px);
+  }
+}
+
+/* 3) 3D Pencil: move + tilt (rotateX/Y/Z) – real pencil feel */
+@keyframes pencil-3d-move {
+  0% {
+    left: -3%;
+    transform: translate(-50%, -50%) translateZ(8px) rotateY(28deg) rotateZ(-5deg) rotateX(2deg);
     opacity: 1;
+  }
+  20% {
+    transform: translate(-50%, -50%) translateZ(12px) rotateY(25deg) rotateZ(-2deg) rotateX(-1deg);
+  }
+  40% {
+    transform: translate(-50%, -50%) translateZ(10px) rotateY(30deg) rotateZ(1deg) rotateX(1deg);
+  }
+  60% {
+    transform: translate(-50%, -50%) translateZ(14px) rotateY(26deg) rotateZ(-1deg) rotateX(0deg);
+  }
+  80% {
+    transform: translate(-50%, -50%) translateZ(9px) rotateY(28deg) rotateZ(2deg) rotateX(-2deg);
+  }
+  100% {
+    left: 103%;
+    transform: translate(-50%, -50%) translateZ(8px) rotateY(28deg) rotateZ(5deg) rotateX(2deg);
+    opacity: 1;
+  }
+}
+
+/* 4) Logo “finish” pop – agency-level settle */
+@keyframes logo-finish-pop {
+  0% {
+    filter: brightness(0.92) saturate(0.98);
+    transform: scale(1);
+  }
+  60% {
+    filter: brightness(1.05) saturate(1.02);
+    transform: scale(1.03);
+  }
+  100% {
+    filter: brightness(1) saturate(1);
     transform: scale(1);
   }
 }
 
-.splash-logo-scale-in {
-  animation: logo-scale-in 0.9s cubic-bezier(0.22, 1, 0.36, 1) forwards;
+.splash-stroke-draw-frame {
+  animation: stroke-draw-frame 1.15s cubic-bezier(0.22, 1, 0.36, 1) forwards;
+}
+
+.splash-logo-reveal-wipe {
+  animation: logo-reveal-wipe 1.8s cubic-bezier(0.25, 0.46, 0.45, 0.94) 0.25s forwards;
+}
+
+.splash-pencil-3d-move {
+  animation: pencil-3d-move 1.8s cubic-bezier(0.25, 0.46, 0.45, 0.94) 0.25s forwards;
+  position: absolute;
+  transform-style: preserve-3d;
+}
+
+.splash-logo-finish-pop {
+  animation: logo-finish-pop 0.5s ease-out forwards;
 }
