@@ -42,7 +42,8 @@ export default function ClientBody({
         logoSlotRef={logoSlotRef}
         onSplashDone={() => setSplashDone(true)}
       />
-      <Header logoSlotRef={logoSlotRef} showLogo={splashDone} />
+      {/* Header + logo sirf jab splash pura khatam ho jaye tab hi dikhaye */}
+      {splashDone && <Header logoSlotRef={logoSlotRef} showLogo={true} />}
       <main
         className={`content-reveal ${contentRevealed ? "revealed" : ""}`}
       >
