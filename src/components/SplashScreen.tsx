@@ -159,13 +159,14 @@ export default function SplashScreen({ logoSlotRef, onSplashDone }: Props) {
                 transition: isFlying ? "transform 0.1s" : "transform 0.4s ease-out",
               }}
             >
-              {/* Logo – scratch reveal (initially fully hidden so koi flash na ho) */}
+              {/* Logo – scratch reveal (first-time jaisa simple left→right wipe) */}
               <div className="absolute inset-0 overflow-hidden">
                 <div
                   className={`absolute inset-0 ${isDraw ? "splash-logo-reveal-wipe" : ""}`}
                   style={{
+                    // Initial state: hidden; hold/flying: fully visible
                     clipPath: isDraw
-                      ? "polygon(0 0, 0 0, 0 100%, 0 100%)"
+                      ? "inset(0 100% 0 0)"
                       : "inset(0 0 0 0)",
                     opacity: isDraw ? 0 : 1,
                   }}
