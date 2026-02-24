@@ -37,7 +37,7 @@ export default function ServicesSection() {
       {/* Blue accent line + heading */}
       <div className="relative mx-auto max-w-[90rem]">
         <div className="h-1.5 w-24 rounded-full bg-linear-to-r from-blue-600 to-blue-400 sm:w-32" />
-        <h2 className="mt-6 text-3xl font-black uppercase tracking-tight text-zinc-800 sm:text-4xl lg:text-6xl">
+        <h2 className="mt-6 text-2xl font-black uppercase tracking-tight text-zinc-800 sm:text-3xl lg:text-4xl">
           You&apos;re at the{" "}
           <span className="bg-linear-to-r from-blue-600 via-blue-500 to-blue-400 bg-clip-text text-transparent">
             right place

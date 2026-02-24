@@ -79,7 +79,7 @@ export default function BookServicePopup({ splashDone }: { splashDone: boolean }
         <div className="px-6 pb-6 pt-8 sm:px-8 sm:pt-10">
           {/* Header */}
           <div className="text-center">
-            <h2 id="popup-title" className="text-xl font-bold text-white sm:text-2xl">
+            <h2 id="popup-title" className="text-lg font-bold text-white sm:text-xl">
               Ready for Reliable Repairs?
             </h2>
             <p className="mt-1 text-sm text-white/90">Book a Service in a Blink!</p>

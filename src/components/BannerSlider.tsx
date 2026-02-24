@@ -164,7 +164,7 @@ export default function BannerSlider() {
 
                   {/* MAIN HEADING - Compact & Professional */}
                   <div className="relative mb-4 text-center max-w-4xl">
-                    <h1 className="text-2xl xs:text-3xl sm:text-5xl md:text-7xl font-black uppercase tracking-tighter leading-[0.9] text-white">
+                    <h1 className="text-2xl xs:text-3xl sm:text-4xl md:text-5xl font-black uppercase tracking-tighter leading-[0.9] text-white">
                       <div className="relative overflow-hidden pt-1">
                         <span
                           className="block"

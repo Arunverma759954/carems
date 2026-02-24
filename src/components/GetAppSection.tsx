@@ -34,7 +34,7 @@ export default function GetAppSection() {
               </p>
             </div>
           </div>
-          <h2 className="mt-8 text-4xl font-extrabold uppercase tracking-tight text-red-600 sm:text-5xl lg:text-5xl">
+          <h2 className="mt-8 text-3xl font-extrabold uppercase tracking-tight text-red-600 sm:text-4xl lg:text-4xl">
             Get the App
           </h2>
           <p className="mt-4 text-lg leading-relaxed text-slate-700">

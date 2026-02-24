@@ -38,10 +38,10 @@ export default function QualityTestimonialSection() {
               boxShadow: "0 25px 50px -12px rgba(0,0,0,0.08), 0 0 0 1px rgba(0,0,0,0.04)",
             }}
           >
-            <h2 className="text-3xl font-extrabold leading-tight tracking-tight text-red-600 sm:text-4xl">
+            <h2 className="text-2xl font-extrabold leading-tight tracking-tight text-red-600 sm:text-3xl">
               Best quality
             </h2>
-            <h2 className="mt-1 text-3xl font-extrabold leading-tight tracking-tight text-red-600 sm:text-4xl">
+            <h2 className="mt-1 text-2xl font-extrabold leading-tight tracking-tight text-red-600 sm:text-3xl">
               Make Life Easy
             </h2>
             <Link

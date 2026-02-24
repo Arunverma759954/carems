@@ -74,10 +74,10 @@ function CountUpStat({
       ref={ref}
       className="group relative flex flex-col items-center rounded-[2.5rem] border border-slate-100 bg-white p-10 text-center shadow-2xl transition-all duration-500 hover:-translate-y-3 hover:shadow-3xl hover:border-blue-500/30"
     >
-      <div className="mb-6 flex h-20 w-20 items-center justify-center rounded-[1.5rem] bg-blue-50 text-blue-600 transition-all duration-500 group-hover:bg-blue-600 group-hover:text-white group-hover:rotate-[10deg] group-hover:shadow-[0_20px_40px_rgba(37,99,235,0.3)]">
+      <div className="mb-6 flex h-16 w-16 items-center justify-center rounded-[1.25rem] bg-blue-50 text-blue-600 transition-all duration-500 group-hover:bg-blue-600 group-hover:text-white group-hover:rotate-[10deg] group-hover:shadow-[0_20px_40px_rgba(37,99,235,0.3)]">
         <StatIcon type={icon} />
       </div>
-      <p className="text-5xl font-black tracking-tighter text-slate-900 sm:text-6xl">
+      <p className="text-4xl font-black tracking-tighter text-slate-900 sm:text-5xl">
         {showValue}{suffix}
       </p>
       <p className="mt-3 text-sm font-black uppercase tracking-[0.3em] text-blue-600">
