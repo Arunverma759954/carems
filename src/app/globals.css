@@ -261,6 +261,7 @@ h6 {
 @keyframes logo-reveal-wipe {
   0% {
     /* bilkul kuch bhi visible nahi */
+    opacity: 0;
     clip-path: polygon(0 0, 0 0, 0 100%, 0 100%);
   }
 
@@ -296,6 +297,7 @@ h6 {
 
   100% {
     /* final – pura logo clean visible with rounded edges */
+    opacity: 1;
     clip-path: inset(0 0 0 0 round 12px);
   }
 }
